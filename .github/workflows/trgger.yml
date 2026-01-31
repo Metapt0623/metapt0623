@@ -1,23 +1,29 @@
-name: 联动触发器
+name: 上市广播-最终冲刺
+
 on:
-  push:
-    branches: [ "main" ] # 当主分支有代码更新时触发
+  workflow_dispatch: # 方便你现在立即点击运行
 
 jobs:
-  dispatch:
+  launch:
     runs-on: ubuntu-latest
     steps:
-      - name: 通知其他三个仓库
+      - name: 广播上市指令
         run: |
-          # 定义需要通知的仓库列表
-          REPOS=("Meta_Core" "EU_Verification" "Sonar_Server")
+          # 包含你的核心 4 个仓库
+          REPOS=("Meta_Core" "EU_Verification" "Sonar_Server" "Identity_Node")
+          
+          WIKI_ID="https://github.com/Metapt0623/Identity_Node.wiki.git"
+          WIKI_META="https://github.com/Metapt0623/Meta_Core.wiki.git"
           
           for REPO in "${REPOS[@]}"; do
-            echo "正在启动 $REPO ..."
+            echo "🚀 正在向 $REPO 发送上市广播..."
             curl -X POST \
               -H "Authorization: token ${{ secrets.MY_WORKFLOW_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/${{ github.repository_owner }}/$REPO/dispatches \
-              -d '{"event_type": "parent_update"}'
+              -d "{\"event_type\": \"all_start\", \"client_payload\": {
+                    \"id_wiki\": \"$WIKI_ID\", 
+                    \"meta_wiki\": \"$WIKI_META\",
+                    \"msg\": \"2月1日上市广播：全系统激活！\"
+                  }}"
           done
-
