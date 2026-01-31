@@ -1,28 +1,26 @@
 const hre = require("hardhat");
 
 async function main() {
-  // 1. 确保名字和 .sol 文件里的 contract 后面那个词一模一样
+  // 这里的名字 "Protocol176" 必须和上面 contract 后面的一致
   const Contract = await hre.ethers.getContractFactory("Protocol176");
   
-  const target = "0x3bfda04ad60df30a7adf66702c68b339f1c4d17f";
+  const myWallet = "0x3bfda04ad60df30a7adf66702c68b339f1c4d17f";
 
-  console.log("正在广播 MetaPToken (TBB) 协议...");
-  console.log("目标地址:", target);
+  console.log("正在部署 MetaPToken (TBB)...");
 
-  // 2. 传入五个出口参数，全部指向你的核心地址
-  const token = await Contract.deploy(target, target, target, target, target);
+  // 将五个分发地址全部设为你的钱包，确保 17.6 亿全额归位
+  const token = await Contract.deploy(myWallet, myWallet, myWallet, myWallet, myWallet);
   
   await token.waitForDeployment();
 
   const address = await token.getAddress();
   console.log("------------------------------------------");
-  console.log("🎉 176协议发射成功！");
-  console.log("永久合约地址:", address);
-  console.log("资产：17.6 亿 TBB 已注入 0x3bfda...d17f");
+  console.log("部署成功！");
+  console.log("TBB 合约地址:", address);
   console.log("------------------------------------------");
 }
 
 main().catch((error) => {
-  console.error("广播失败，原因:", error);
+  console.error(error);
   process.exitCode = 1;
 });
