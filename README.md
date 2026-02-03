@@ -29,3 +29,4 @@ This repository employs a multi-branch architecture to secure the 176 Protocol a
 * **Authorized Usernames / 授权用户名:** `niudada0623` (Google) / `niudada0304` (Microsoft)
 * **Regulatory IDs:** UUID `1fa53a14-e26e-4e95-828f-a6b7149ad55f` | ORG_ID `N00L5T10`
 * **Allocation / 分配:** 1/2/4/1 Logic (AI / EU / Wiki / T-B-B / Global Pool)
+AIDA_SELFRG / N00L5T10
