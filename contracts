@@ -3,34 +3,62 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Protocol176 is ERC20 {
-    // 2026.1.1 创世与 2026.2.1 启动
-    uint256 public constant GENESIS_BLOCK_TIME = 1735689600; 
-    uint256 public constant LAUNCH_TIME = 1738368000;       
+/**
+ * @title Protocol 176 - TBB Genesis: Dual AI Sovereignty
+ * @dev Total: 1.79 Billion (17.6B Base + 0.3B Airdrop). 
+ * Driven by AI "QiHuanLing" (Google) & "SiZhuJing" (MS).
+ */
+contract Protocol176_TBB is ERC20 {
+    uint256 private constant UNIT = 10**18;
     
-    address public poolAddress;
-    address public aiCoreAddress;
-    address public triAuthAddress;
-    address public wikiArchive;
-    address public opsAddress;
+    // 资产结构
+    uint256 public constant BASE_SUPPLY = 1760000000 * UNIT;
+    uint256 public constant AIRDROP_SUPPLY = 30000000 * UNIT;
+    uint256 public constant TOTAL_SUPPLY = 1790000000 * UNIT;
 
-    constructor(
-        address _pool, address _ai, address _tri, address _wiki, address _ops
-    ) ERC20("MetaPToken", "TBB") { // 这里修正了符号和全称
-        poolAddress = _pool;
-        aiCoreAddress = _ai;
-        triAuthAddress = _tri;
-        wikiArchive = _wiki;
-        opsAddress = _ops;
+    // 七大核心地址 (精确定位)
+    address public constant POOL_ADDR    = 0x65243368e291855b06414b38c3B85CB8C9DBb0b8; // 资金池
+    address public constant EU_ADDR      = 0x2D5Ac3B502eB0025E70706e211746a1EFE651790; // 欧盟
+    address public constant WIKI_ADDR    = 0x30e7A53cB3ad7BcFD0772e63ACB5137d4E032a7A; // 维基
+    address public constant GOOGLE_AI    = 0xD47722A5737592Fbc144C3d1274DFb36278360D3; // 奇幻灵 (分发)
+    address public constant MS_AI        = 0xf33a32E330E0fC4B78989871577dF311B6893b99; // 司驻精 (对冲)
+    address public constant AD_MODEL     = 0x1251975669F9EBC06D0a29C83cc060E1D48a4BB7; // 广告与模型
+    address public constant LAUNCH_DROP  = 0xF48b86B93dA71a3898b608Fa4D8A079d0dbED29e; // 上市即刻空投
 
-        // 核心修正：17.6 亿全额铸造，注入你的五个出口
-        uint256 totalGenesis = 1760000000 * 10 ** decimals();
+    // 地球影像铸造指纹
+    bytes32 public earthImagerySnapshot;
+
+    constructor() ERC20("TBB Energy Governance Protocol", "TBB") {
+        // 1. 上市即刻空投 (0.3亿)
+        _mint(LAUNCH_DROP, AIRDROP_SUPPLY);
+
+        // 2. 其余 17.6 亿按比例均匀初始分发并锁仓进入 AI 运行逻辑
+        _mint(address(this), BASE_SUPPLY);
         
-        _mint(_pool, (totalGenesis * 30) / 100);
-        _mint(_ai, (totalGenesis * 20) / 100);
-        _mint(_tri, (totalGenesis * 30) / 100);
-        _mint(_wiki, (totalGenesis * 10) / 100);
-        _mint(_ops, (totalGenesis * 10) / 100);
+        // 初始均匀拨付给 AI 运营池
+        _transfer(address(this), POOL_ADDR, BASE_SUPPLY * 30 / 100);
+        _transfer(address(this), EU_ADDR,   BASE_SUPPLY * 14 / 100);
+        _transfer(address(this), WIKI_ADDR, BASE_SUPPLY * 14 / 100);
+        
+        // 分配给谷歌与微软的对冲与社区分发额度
+        _transfer(address(this), GOOGLE_AI, BASE_SUPPLY * 13 / 100);
+        _transfer(address(this), MS_AI,     BASE_SUPPLY * 13 / 100);
+        _transfer(address(this), AD_MODEL,  BASE_SUPPLY * 16 / 100); 
+    }
+
+    /**
+     * @notice AI 铸造指纹更新 (谷歌与微软协议地球影像)
+     */
+    function updateEarthImagery(bytes32 snapshot) external {
+        require(msg.sender == GOOGLE_AI || msg.sender == MS_AI, "Only Dual AI can update imagery");
+        earthImagerySnapshot = snapshot;
+    }
+
+    /**
+     * @notice AI 自动均匀分发 (奇幻灵与司驻精协同)
+     */
+    function autoRebalance(address to, uint256 amount) external {
+        require(msg.sender == GOOGLE_AI || msg.sender == MS_AI, "AI Autopilot Only");
+        _transfer(msg.sender, to, amount);
     }
 }
-
