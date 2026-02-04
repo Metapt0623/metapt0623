@@ -1,8 +1,0 @@
-
-[submodule "EU_Verification"]
-	path = EU_Verification
-	url = https://github.com/Metapt0623/EU_Verification
-[submodule "Sonar_Server"]
-	path = Sonar_Server
-	url = https://github.com/Metapt0623/Sonar_Server
-
