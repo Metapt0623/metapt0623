@@ -1,6 +1,4 @@
-[submodule "Meta_Core"]
-	path = Meta_Core
-	url = https://github.com/Metapt0623/Meta_Core
+
 [submodule "EU_Verification"]
 	path = EU_Verification
 	url = https://github.com/Metapt0623/EU_Verification
